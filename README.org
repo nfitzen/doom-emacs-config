@@ -1,5 +1,5 @@
-#+SPDX-License-Identifier: MIT
-#+SPDX-FileCopyrightText: (C) 2022 nfitzen <https://github.com/nfitzen>
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: (C) 2022 nfitzen <https://github.com/nfitzen>
 #+TITLE:   My Doom Emacs Config
 #+DATE:    March 12, 2022
 #+STARTUP: inlineimages nofold
@@ -13,4 +13,6 @@ I guess the Git history will then document my Emacs journey. Woo.
 
 Licensed under the [[file:LICENSE][Expat/MIT License]].
 
-See individual files for more copyright information.
+See the SPDX headers in individual files for more copyright information.
+
+This README is Copyright \copy 2022 [[github:nfitzen][nfitzen]].
