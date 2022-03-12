@@ -4,8 +4,6 @@
 #+DATE:    March 12, 2022
 #+STARTUP: inlineimages nofold
 
-* My Doom Emacs configs and stuff
-
 Currently, it's very barren, because I'm new to this whole shtick.
 I guess the Git history will then document my Emacs journey. Woo.
 
