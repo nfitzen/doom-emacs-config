@@ -1,0 +1,16 @@
+#+SPDX-License-Identifier: MIT
+#+SPDX-FileCopyrightText: (C) 2022 nfitzen <https://github.com/nfitzen>
+#+TITLE:   My Doom Emacs Config
+#+DATE:    March 12, 2022
+#+STARTUP: inlineimages nofold
+
+* My Doom Emacs configs and stuff
+
+Currently, it's very barren, because I'm new to this whole shtick.
+I guess the Git history will then document my Emacs journey. Woo.
+
+* Copyright
+
+Licensed under the [[file:LICENSE][Expat/MIT License]].
+
+See individual files for more copyright information.
