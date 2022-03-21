@@ -1,7 +1,7 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-; SPDX-License-Identifier: MIT
-; SPDX-FileCopyrightText: (C) 2022 nfitzen <https://github.com/nfitzen>
-; Copyright (c) 2016-2022 Henrik Lissner.
+;; SPDX-License-Identifier: MIT
+;; SPDX-FileCopyrightText: (C) 2022 nfitzen <https://github.com/nfitzen>
+;; Copyright (c) 2016-2022 Henrik Lissner.
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!

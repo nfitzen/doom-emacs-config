@@ -1,8 +1,8 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
-; SPDX-License-Identifier: MIT
-; SPDX-FileCopyrightText: (C) 2022 nfitzen <https://github.com/nfitzen>
-; Copyright (c) 2016-2022 Henrik Lissner.
+;; SPDX-License-Identifier: MIT
+;; SPDX-FileCopyrightText: (C) 2022 nfitzen <https://github.com/nfitzen>
+;; Copyright (c) 2016-2022 Henrik Lissner.
 
 ;; To install a package with Doom you must declare them here and run 'doom sync'
 ;; on the command line, then restart Emacs for the changes to take effect -- or
