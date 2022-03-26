@@ -15,14 +15,13 @@
 
 (setq select-enable-clipboard nil)
 
-;; Org-mode
-
 (after! org
   (setq org-journal-enable-encryption t))
 
-;; Line wrapping
+(after! dired
+  (setq dired-dwim-target t))
 
-(setq dired-dwim-target t)
+;; Line wrapping
 
 (setq fill-column 80
       display-fill-column-indicator-column 80)
