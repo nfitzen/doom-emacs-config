@@ -53,3 +53,4 @@
 ;(unpin! t)
 
 (package! visual-fill-column)
+(package! bnf-mode)
