@@ -16,7 +16,8 @@
 (setq select-enable-clipboard nil)
 
 (after! org
-  (setq org-journal-enable-encryption t))
+  (setq org-journal-enable-encryption t
+        org-log-done 'time))
 
 (after! dired
   (setq dired-dwim-target t))
