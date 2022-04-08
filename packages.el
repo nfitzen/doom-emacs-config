@@ -54,3 +54,7 @@
 
 (package! visual-fill-column)
 (package! bnf-mode)
+(package! org-super-agenda)
+
+(package! mcf-mode
+  :recipe (:host github :repo "rasensuihei/mcf"))
