@@ -13,5 +13,6 @@ Licensed under the [[file:LICENSE][Expat/MIT License]].
 See the SPDX headers in individual files for more copyright information.
 
 This README is Copyright \copy 2022 [[github:nfitzen][nfitzen]].
+(This README is also licensed under the [[file:LICENSE][Expat/MIT License]].)
 (If reading in plaintext, see the top of the file for a proper copyright
 notice.)

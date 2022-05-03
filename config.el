@@ -17,19 +17,19 @@
 
 (after! org
   (setq org-journal-enable-encryption t
-        org-log-done 'time))
-(setq
- org-super-agenda-groups '(
-                           (:name "Today"
-                            :time-grid t
-                            :scheduled today)
-                           (:name "Important"
-                            :priority "A")
-                           (:name "Deadlines"
-                            :tag "dl")
-                           (:name "School"
-                            :tag "school")
-                           ))
+        org-log-done 'time
+        org-pretty-entities t
+        org-super-agenda-groups '(
+                                  (:name "Today"
+                                   :time-grid t
+                                   :scheduled today)
+                                  (:name "Important"
+                                   :priority "A")
+                                  (:name "Deadlines"
+                                   :tag "dl")
+                                  (:name "School"
+                                   :tag "school")
+                                  )))
 
 (after! dired
   (setq dired-dwim-target t))
