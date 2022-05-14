@@ -17,19 +17,21 @@
 
 (after! org
   (setq org-journal-enable-encryption t
-        org-log-done 'time))
-(setq
- org-super-agenda-groups '(
-                           (:name "Today"
-                            :time-grid t
-                            :scheduled today)
-                           (:name "Important"
-                            :priority "A")
-                           (:name "Deadlines"
-                            :tag "dl")
-                           (:name "School"
-                            :tag "school")
-                           ))
+        org-log-done 'time
+        org-super-agenda-groups '(
+                                  (:name "Today"
+                                   :time-grid t
+                                   :scheduled today)
+                                  (:name "Important"
+                                   :priority "A")
+                                  (:name "Deadlines"
+                                   :tag "dl")
+                                  (:name "School"
+                                   :tag "school")
+                                  )))
+
+(after! lsp-pyright
+  (setq lsp-pyright-python-executable-cmd "python3"))
 
 (after! dired
   (setq dired-dwim-target t))
