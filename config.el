@@ -18,7 +18,10 @@
 (after! org
   (setq org-journal-enable-encryption t
         org-log-done 'time
+<<<<<<< HEAD
         org-pretty-entities t
+=======
+>>>>>>> a1d47158b47ef486442d6009eaa7676e75a3d7d4
         org-super-agenda-groups '(
                                   (:name "Today"
                                    :time-grid t
@@ -30,6 +33,12 @@
                                   (:name "School"
                                    :tag "school")
                                   )))
+<<<<<<< HEAD
+=======
+
+(after! lsp-pyright
+  (setq lsp-pyright-python-executable-cmd "python3"))
+>>>>>>> a1d47158b47ef486442d6009eaa7676e75a3d7d4
 
 (after! dired
   (setq dired-dwim-target t))
