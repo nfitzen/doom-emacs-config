@@ -39,7 +39,7 @@
 
 ;; Line wrapping
 
-(setq fill-column 80
+(setq fill-column 79
       display-fill-column-indicator-column 80)
 
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
