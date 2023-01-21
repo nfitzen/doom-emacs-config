@@ -1,5 +1,6 @@
 ;;; init.el -*- lexical-binding: t; -*-
 ;; SPDX-License-Identifier: MIT
+;; SPDX-FileCopyrightText: (C) 2023 nfitzen <https://github.com/nfitzen>
 ;; Copyright (c) 2016-2022 Henrik Lissner.
 
 ;; This file controls what Doom modules are enabled and what order they load
@@ -115,7 +116,7 @@
        :lang
        ;;agda              ; types of types of types of types...
        ;;beancount         ; mind the GAAP
-       cc                  ; C > C++ == 1
+       (cc +lsp)           ; C > C++ == 1
        ;;clojure           ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs

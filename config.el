@@ -1,6 +1,6 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 ;; SPDX-License-Identifier: MIT
-;; SPDX-FileCopyrightText: (C) 2022 nfitzen <https://github.com/nfitzen>
+;; SPDX-FileCopyrightText: (C) 2022-2023 nfitzen <https://github.com/nfitzen>
 ;; Copyright (c) 2016-2022 Henrik Lissner.
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
@@ -17,6 +17,7 @@
 
 (after! org
   (setq org-journal-enable-encryption t
+        org-todo-repeat-to-state t
         org-log-done 'time
         org-pretty-entities t
         org-super-agenda-groups '(
@@ -39,11 +40,12 @@
 
 ;; Line wrapping
 
-(setq fill-column 79
+(setq-default fill-column 78
       display-fill-column-indicator-column 80)
 
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
-(add-hook 'fundamental-mode #'visual-fill-column-mode--enable)
+(add-hook 'fundamental-mode #'visual-fill-column-mode)
+(add-hook 'org-agenda #'org-super-agenda-mode)
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
