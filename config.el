@@ -15,22 +15,21 @@
 
 (setq select-enable-clipboard nil)
 
-(after! org
-  (setq org-journal-enable-encryption t
-        org-todo-repeat-to-state t
-        org-log-done 'time
-        org-pretty-entities t
-        org-super-agenda-groups '(
-                                  (:name "Today"
-                                   :time-grid t
-                                   :scheduled today)
-                                  (:name "Important"
-                                   :priority "A")
-                                  (:name "Deadlines"
-                                   :tag "dl")
-                                  (:name "School"
-                                   :tag "school")
-                                  )))
+(setq org-journal-enable-encryption t
+      org-todo-repeat-to-state t
+      org-log-done 'time
+      org-pretty-entities t
+      org-super-agenda-groups '(
+                                (:name "Today"
+                                 :time-grid t
+                                 :scheduled today)
+                                (:name "Important"
+                                 :priority "A")
+                                (:name "Deadlines"
+                                 :tag "dl")
+                                (:name "School"
+                                 :tag "school")
+                                ))
 
 (after! lsp-pyright
   (setq lsp-pyright-python-executable-cmd "python3"))
@@ -41,11 +40,15 @@
 ;; Line wrapping
 
 (setq-default fill-column 78
-      display-fill-column-indicator-column 80)
+              display-fill-column-indicator-column 80)
 
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 (add-hook 'fundamental-mode #'visual-fill-column-mode)
-(add-hook 'org-agenda #'org-super-agenda-mode)
+(add-hook 'org-agenda-mode-hook #'org-super-agenda-mode)
+(defun enable-multiline-block ()
+    (if comment-multi-line
+    (set-variable 'comment-style 'extra-line)))
+(add-hook 'prog-mode-hook 'enable-multiline-block)
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
