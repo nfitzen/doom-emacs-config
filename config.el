@@ -16,6 +16,9 @@
 (setq select-enable-clipboard nil)
 
 (setq org-journal-enable-encryption t
+      org-agenda-todo-ignore-scheduled 'future
+      org-agenda-tags-todo-honor-ignore-options t
+      org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled
       org-todo-repeat-to-state t
       org-log-done 'time
       org-pretty-entities t
@@ -43,6 +46,7 @@
               display-fill-column-indicator-column 80)
 
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+(add-hook 'markdown-mode-hook #'display-fill-column-indicator-mode)
 (add-hook 'fundamental-mode #'visual-fill-column-mode)
 (add-hook 'org-agenda-mode-hook #'org-super-agenda-mode)
 (defun enable-multiline-block ()
