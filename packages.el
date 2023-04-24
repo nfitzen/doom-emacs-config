@@ -55,6 +55,8 @@
 (package! visual-fill-column)
 (package! bnf-mode)
 (package! org-super-agenda)
+(package! sage-shell-mode)
+(package! ob-sagemath)
 
 (package! mcf-mode
   :recipe (:host github :repo "rasensuihei/mcf"))
