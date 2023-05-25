@@ -15,6 +15,8 @@
 
 (setq select-enable-clipboard nil)
 
+(setq org-export-date-timestamp-format "%x")
+
 (setq org-journal-enable-encryption t
       org-agenda-todo-ignore-scheduled 'future
       org-agenda-tags-todo-honor-ignore-options t
@@ -53,11 +55,6 @@
     (if comment-multi-line
     (set-variable 'comment-style 'extra-line)))
 (add-hook 'prog-mode-hook 'enable-multiline-block)
-
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets. It is optional.
-(setq user-full-name "Nathaniel Fitzenrider"
-      user-mail-address "nathaniel@fitzenrider.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -125,5 +122,7 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(map! :leader
-      :desc "Show LSP docs" "c h" #'lsp-ui-doc-show)
+(map! :map 'general-override-mode-map
+      :leader
+      :desc "Show LSP docs" "c h" #'lsp-describe-thing-at-point
+      "t c" #'display-fill-column-indicator-mode)

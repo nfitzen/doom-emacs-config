@@ -57,6 +57,7 @@
 (package! org-super-agenda)
 (package! sage-shell-mode)
 (package! ob-sagemath)
+(package! ess)
 
 (package! mcf-mode
   :recipe (:host github :repo "rasensuihei/mcf"))
