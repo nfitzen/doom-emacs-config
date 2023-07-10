@@ -126,3 +126,7 @@
       :leader
       :desc "Show LSP docs" "c h" #'lsp-describe-thing-at-point
       "t c" #'display-fill-column-indicator-mode)
+
+(map! :map 'general-override-mode-map
+      "<kp-begin>" #'(lambda () (interactive) 'nil)
+      "M-q" #'fill-paragraph)
