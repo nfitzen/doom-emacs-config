@@ -47,13 +47,31 @@
 (setq-default fill-column 78
               display-fill-column-indicator-column 80)
 
+;; adapted from https://stackoverflow.com/a/18513349 by algolix
+;; licensed under CC BY-SA 3.0.
+
+(defun calc-offset-on-org-level ()
+  "Calculate offset (in chars) on current level in org mode file."
+  (* (or (org-current-level) 0) org-indent-indentation-per-level))
+
+(defun my-org-fill-paragraph (&optional JUSTIFY)
+  "Calculate apt fill-column value and fill paragraph."
+  (let* ((fill-column (- fill-column (calc-offset-on-org-level))))
+    (org-fill-paragraph JUSTIFY)))
+
+(defun setup-my-org-fill-paragraph ()
+  "Sets up the fill-paragraph."
+  (setq fill-paragraph-function #'my-org-fill-paragraph))
+
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 (add-hook 'markdown-mode-hook #'display-fill-column-indicator-mode)
 (add-hook 'fundamental-mode #'visual-fill-column-mode)
 (add-hook 'org-agenda-mode-hook #'org-super-agenda-mode)
+(add-hook 'org-mode-hook #'setup-my-org-fill-paragraph)
+
 (defun enable-multiline-block ()
-    (if comment-multi-line
-    (set-variable 'comment-style 'extra-line)))
+  (if comment-multi-line
+      (set-variable 'comment-style 'extra-line)))
 (add-hook 'prog-mode-hook 'enable-multiline-block)
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
@@ -125,8 +143,12 @@
 (map! :map 'general-override-mode-map
       :leader
       :desc "Show LSP docs" "c h" #'lsp-describe-thing-at-point
-      "t c" #'display-fill-column-indicator-mode)
-
-(map! :map 'general-override-mode-map
+      "t c" #'display-fill-column-indicator-mode
       "<kp-begin>" #'(lambda () (interactive) 'nil)
       "M-q" #'fill-paragraph)
+
+(map! :map evil-org-mode-map
+      :n "gQ" 'nil)
+(map! :map org-mode-map
+      :leader
+      "M-q" 'nil)
