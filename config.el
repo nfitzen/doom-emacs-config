@@ -15,41 +15,47 @@
 
 (setq select-enable-clipboard nil)
 
+;; org mode
+
+;; org export
 (setq org-export-date-timestamp-format "%x")
 
-(setq org-journal-enable-encryption t
-      org-agenda-todo-ignore-scheduled 'future
+(use-package! org-super-agenda
+  :after org-agenda
+  :init
+  (setq org-super-agenda-groups '(
+                                  (:name "Today"
+                                   :time-grid t
+                                   :scheduled today)
+                                  (:name "Important"
+                                   :priority "A")
+                                  (:name "Deadlines"
+                                   :tag "dl")
+                                  (:name "School"
+                                   :tag "school")
+                                  ))
+  :config
+  (org-super-agenda-mode))
+
+(after! org-journal
+  (setq org-journal-enable-encryption t))
+
+(after! org-agenda
+  (setq org-agenda-todo-ignore-scheduled 'future
       org-agenda-tags-todo-honor-ignore-options t
       org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled
       org-todo-repeat-to-state t
       org-log-done 'time
       org-pretty-entities t
-      org-super-agenda-groups '(
-                                (:name "Today"
-                                 :time-grid t
-                                 :scheduled today)
-                                (:name "Important"
-                                 :priority "A")
-                                (:name "Deadlines"
-                                 :tag "dl")
-                                (:name "School"
-                                 :tag "school")
-                                ))
+      ))
 
-(after! lsp-pyright
-  (setq lsp-pyright-python-executable-cmd "python3"))
+; (add-hook! 'org-agenda-mode-hook :append #'org-super-agenda-mode)
 
-(after! dired
-  (setq dired-dwim-target t))
+;; org markup
 
-;; Line wrapping
-
-(setq-default fill-column 78
-              display-fill-column-indicator-column 80)
-
-;; adapted from https://stackoverflow.com/a/18513349 by algolix
-;; licensed under CC BY-SA 3.0.
-
+;; the following block is (C) 2013 algolix, licensed under CC BY-SA 3.0.
+;; https://stackoverflow.com/a/18513349/13840781
+;; BEGIN BLOCK
 (defun calc-offset-on-org-level ()
   "Calculate offset (in chars) on current level in org mode file."
   (* (or (org-current-level) 0) org-indent-indentation-per-level))
@@ -59,20 +65,45 @@
   (let* ((fill-column (- fill-column (calc-offset-on-org-level))))
     (org-fill-paragraph JUSTIFY)))
 
-(defun setup-my-org-fill-paragraph ()
-  "Sets up the fill-paragraph."
-  (setq fill-paragraph-function #'my-org-fill-paragraph))
+(defun my-org-auto-fill-function ()
+  "Calculate apt fill-column value and do auto-fill"
+  (let* ((fill-column (- fill-column (calc-offset-on-org-level))))
+    (org-auto-fill-function)))
 
-(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
-(add-hook 'markdown-mode-hook #'display-fill-column-indicator-mode)
-(add-hook 'fundamental-mode #'visual-fill-column-mode)
-(add-hook 'org-agenda-mode-hook #'org-super-agenda-mode)
-(add-hook 'org-mode-hook #'setup-my-org-fill-paragraph)
+(defun my-org-mode-hook ()
+  (setq fill-paragraph-function   #'my-org-fill-paragraph
+        normal-auto-fill-function #'my-org-auto-fill-function))
+
+(add-hook! 'org-load-hook #'my-org-mode-hook)
+(add-hook! 'org-mode-hook #'my-org-mode-hook)
+;; END BLOCK
+
+(setq! dired-dwim-target t)
+
+;; LSP and formatting
+(add-hook! '(python-mode-hook
+             js-base-mode-hook
+             html-mode-hook
+             css-base-mode-hook)
+           :append #'apheleia-mode)
+
+(setq! apheleia-formatters-respect-fill-column t)
+
+(setq! lsp-pyright-python-executable-cmd "python3")
+
+;; Line wrapping
+
+(setq-default fill-column 78
+              display-fill-column-indicator-column 80)
+
+(add-hook! 'prog-mode-hook :append #'display-fill-column-indicator-mode)
+(add-hook! 'markdown-mode-hook :append #'display-fill-column-indicator-mode)
+(add-hook! 'fundamental-mode :append #'visual-fill-column-mode)
 
 (defun enable-multiline-block ()
   (if comment-multi-line
       (set-variable 'comment-style 'extra-line)))
-(add-hook 'prog-mode-hook 'enable-multiline-block)
+(add-hook! 'prog-mode-hook :append 'enable-multiline-block)
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -101,7 +132,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type 'relative)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -140,15 +171,8 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(map! :map 'general-override-mode-map
-      :leader
+(map! :leader
       :desc "Show LSP docs" "c h" #'lsp-describe-thing-at-point
-      "t c" #'display-fill-column-indicator-mode
-      "<kp-begin>" #'(lambda () (interactive) 'nil)
-      "M-q" #'fill-paragraph)
+      "t c" #'display-fill-column-indicator-mode)
 
-(map! :map evil-org-mode-map
-      :n "gQ" 'nil)
-(map! :map org-mode-map
-      :leader
-      "M-q" 'nil)
+(map! :after org :map org-mode-map "M-q" #'fill-paragraph)
