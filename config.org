@@ -1,8 +1,15 @@
 # SPDX-License-Identifier: MIT
-# SPDX-FileCopyrightText: (C) 2022-2023 nfitzen <https://github.com/nfitzen>
+# SPDX-FileCopyrightText: (C) 2022-2024 nfitzen <https://github.com/nfitzen>
 # Copyright (c) 2016-2022 Henrik Lissner.
 #+TITLE: Doom Emacs Config
 #+NAME: nfitzen
+
+Copyright \copy 2022-2024 nfitzen <https://github.com/nfitzen>. \\
+Copyright \copy 2016-2022 Henrik Lissner.
+
+Most parts of this file are licensed under the [[file:LICENSE][Expat/MIT License]].
+Some sections are under a different copyright or license.
+See individual sections for more information.
 
 * Table of Contents :toc:
 - [[#clipboard][Clipboard]]
@@ -144,7 +151,6 @@ weird keybinding shenanigans.
   (remove-hook 'python-mode-hook #'poetry-tracking-mode)
   (poetry-tracking-mode 1))
 #+end_src
-
 * Formatting
 ** Line Wrapping
 #+begin_src emacs-lisp
