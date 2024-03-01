@@ -186,4 +186,8 @@
       :desc "Show LSP docs" "c h" #'lsp-describe-thing-at-point
       "t c" #'display-fill-column-indicator-mode)
 
+(map! :map org-mode-map
+      :leader
+      "t p" #'+org-pretty-mode)
+
 (map! :after org :map org-mode-map "M-q" #'fill-paragraph)
