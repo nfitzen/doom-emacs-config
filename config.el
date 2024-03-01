@@ -13,7 +13,7 @@
 ;; ...that probably isn't the Emacs way. welp.
 ;; The "+ buffer works for clipboard...
 
-(setq select-enable-clipboard nil)
+(setq! select-enable-clipboard nil)
 
 ;; org mode
 
@@ -42,14 +42,14 @@
 
 (after! org-agenda
   (setq org-agenda-todo-ignore-scheduled 'future
-      org-agenda-tags-todo-honor-ignore-options t
-      org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled
-      org-todo-repeat-to-state t
-      org-log-done 'time
-      org-pretty-entities t
-      ))
+        org-agenda-tags-todo-honor-ignore-options t
+        org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled
+        org-todo-repeat-to-state t
+        org-log-done 'time
+        org-pretty-entities t
+        ))
 
-; (add-hook! 'org-agenda-mode-hook :append #'org-super-agenda-mode)
+;; (add-hook! 'org-agenda-mode-hook :append #'org-super-agenda-mode)
 
 ;; org markup
 
@@ -98,7 +98,6 @@
 
 (add-hook! 'prog-mode-hook :append #'display-fill-column-indicator-mode)
 (add-hook! 'markdown-mode-hook :append #'display-fill-column-indicator-mode)
-(add-hook! 'fundamental-mode :append #'visual-fill-column-mode)
 
 (defun enable-multiline-block ()
   (if comment-multi-line
