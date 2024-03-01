@@ -89,12 +89,24 @@
 
 (setq! apheleia-formatters-respect-fill-column t)
 
+(setq-default indent-tabs-mode nil
+              c-basic-offset 4
+              tab-width 8)
+
+;; python
 (setq! lsp-pyright-python-executable-cmd "python3")
+(after! poetry
+  (remove-hook 'python-mode-hook #'poetry-tracking-mode)
+  (poetry-tracking-mode 1))
 
 ;; Line wrapping
 
 (setq-default fill-column 78
               display-fill-column-indicator-column 80)
+
+(add-hook! 'text-mode-hook :append :local
+  (setq fill-column 70
+        display-fill-column-indicator 72))
 
 (add-hook! 'prog-mode-hook :append #'display-fill-column-indicator-mode)
 (add-hook! 'markdown-mode-hook :append #'display-fill-column-indicator-mode)
