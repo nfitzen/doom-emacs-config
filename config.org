@@ -1,0 +1,175 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: (C) 2022-2023 nfitzen <https://github.com/nfitzen>
+# Copyright (c) 2016-2022 Henrik Lissner.
+#+TITLE: Doom Emacs Config
+#+NAME: nfitzen
+
+* Table of Contents :toc:
+- [[#clipboard][Clipboard]]
+- [[#org-mode][Org Mode]]
+  - [[#general][General]]
+  - [[#keybindings][Keybindings]]
+  - [[#org-journal][Org Journal]]
+  - [[#org-agenda][Org Agenda]]
+  - [[#org-super-agenda][Org Super Agenda]]
+  - [[#org-markup][Org Markup]]
+- [[#dired][Dired]]
+- [[#programming][Programming]]
+  - [[#general-lsp-and-formatting][General LSP and Formatting]]
+  - [[#python][Python]]
+- [[#formatting][Formatting]]
+  - [[#line-wrapping][Line Wrapping]]
+- [[#themes][Themes]]
+
+* Clipboard
+I don't like Emacs constantly copying to my clipboard.
+There is a solution at
+https://web.archive.org/web/20150313145313/http://www.codejury.com/bypassing-the-clipboard-in-emacs-evil-mode/
+But for now, I'm going the ridiculously stupid route.
+...that probably isn't the Emacs way. welp.
+The "+ buffer works for clipboard...
+
+I should learn how to manage the kill ring properly, however.
+It seems cool.
+
+#+begin_src emacs-lisp
+(setq! select-enable-clipboard nil)
+#+end_src
+
+* Org Mode
+** General
+#+begin_src emacs-lisp
+(setq org-directory "~/org/")
+#+end_src
+** Keybindings
+#+begin_src emacs-lisp
+(map! :map org-mode-map
+      "M-q" #'fill-paragraph
+      :leader
+      "t p" #'+org-pretty-mode)
+#+end_src
+** Org Journal
+#+begin_src emacs-lisp
+(after! org-journal
+  (setq org-journal-enable-encryption t))
+#+end_src
+** Org Agenda
+#+begin_src emacs-lisp
+(after! org-agenda
+  (setq org-agenda-todo-ignore-scheduled 'future
+        org-agenda-tags-todo-honor-ignore-options t
+        org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled
+        org-todo-repeat-to-state t
+        org-log-done 'time
+        org-pretty-entities t
+        ))
+#+end_src
+** Org Super Agenda
+#+begin_src emacs-lisp
+(use-package! org-super-agenda
+  :after org-agenda
+  :init
+  (setq org-super-agenda-groups '(
+                                  (:name "Today"
+                                   :time-grid t
+                                   :scheduled today)
+                                  (:name "Important"
+                                   :priority "A")
+                                  (:name "Deadlines"
+                                   :tag "dl")
+                                  (:name "School"
+                                   :tag "school")
+                                  ))
+  :config
+  (org-super-agenda-mode))
+#+end_src
+** Org Markup
+The following block is \copy 2013 algolix, licensed under
+[[https://creativecommons.org/licenses/by-sa/3.0/][CC BY-SA 3.0]].
+From [[https://stackoverflow.com/a/18513349/13840781][Stackoverflow]].
+Some minor changes were made from the SO post.
+Tries to get org-mode to fill paragraph.
+I currently don't have it working in Doom Emacs due to some
+weird keybinding shenanigans.
+
+#+begin_src emacs-lisp
+(defun calc-offset-on-org-level ()
+  "Calculate offset (in chars) on current level in org mode file."
+  (* (or (org-current-level) 0) org-indent-indentation-per-level))
+
+(defun my-org-fill-paragraph (&optional JUSTIFY)
+  "Calculate apt fill-column value and fill paragraph."
+  (let* ((fill-column (- fill-column (calc-offset-on-org-level))))
+    (org-fill-paragraph JUSTIFY)))
+
+(defun my-org-auto-fill-function ()
+  "Calculate apt fill-column value and do auto-fill"
+  (let* ((fill-column (- fill-column (calc-offset-on-org-level))))
+    (org-auto-fill-function)))
+
+(defun my-org-mode-hook ()
+  (setq fill-paragraph-function   #'my-org-fill-paragraph
+        normal-auto-fill-function #'my-org-auto-fill-function))
+
+(add-hook! 'org-load-hook #'my-org-mode-hook)
+(add-hook! 'org-mode-hook #'my-org-mode-hook)
+#+end_src
+
+* Dired
+#+begin_src emacs-lisp
+(setq! dired-dwim-target t)
+#+end_src
+* Programming
+** General LSP and Formatting
+#+begin_src emacs-lisp
+(add-hook! '(python-mode-hook
+             js-base-mode-hook
+             html-mode-hook
+             css-base-mode-hook)
+           :append #'apheleia-mode)
+
+(setq! apheleia-formatters-respect-fill-column t)
+
+(setq-default indent-tabs-mode nil
+              c-basic-offset 4
+              tab-width 8)
+
+(map! :leader
+      :desc "Show LSP docs" "c h" #'lsp-describe-thing-at-point)
+#+end_src
+** Python
+#+begin_src emacs-lisp
+(setq! lsp-pyright-python-executable-cmd "python3")
+(after! poetry
+  (remove-hook 'python-mode-hook #'poetry-tracking-mode)
+  (poetry-tracking-mode 1))
+#+end_src
+
+* Formatting
+** Line Wrapping
+#+begin_src emacs-lisp
+(setq-default fill-column 78
+              display-fill-column-indicator-column 80)
+
+(add-hook! 'text-mode-hook :append :local
+  (setq fill-column 70
+        display-fill-column-indicator 72))
+
+(add-hook! 'prog-mode-hook :append #'display-fill-column-indicator-mode)
+(add-hook! 'markdown-mode-hook :append #'display-fill-column-indicator-mode)
+
+(defun enable-multiline-block ()
+  (if comment-multi-line
+      (set-variable 'comment-style 'extra-line)))
+(add-hook! 'prog-mode-hook :append 'enable-multiline-block)
+#+end_src
+* Themes
+Miscellaneous theming and style.
+
+#+begin_src emacs-lisp
+(setq doom-theme 'doom-one)
+(setq display-line-numbers-type 'relative)
+
+(map! :leader
+      "t c" #'display-fill-column-indicator-mode)
+#+end_src
