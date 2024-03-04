@@ -4,7 +4,7 @@
 #+TITLE: Doom Emacs Config
 #+AUTHOR: nfitzen
 
-Copyright \copy 2022-2024 nfitzen <https://github.com/nfitzen>. \\
+Copyright \copy 2022-2024 [[https://github.com/nfitzen][nfitzen]]. \\
 Copyright \copy 2016-2022 Henrik Lissner.
 
 Most parts of this file are licensed under the [[file:LICENSE][Expat/MIT License]].
