@@ -169,9 +169,6 @@ But that could be fine, I guess.
 ** Python
 #+begin_src emacs-lisp
 (setq! lsp-pyright-python-executable-cmd "python3")
-(after! poetry
-  (remove-hook 'python-mode-hook #'poetry-tracking-mode)
-  (poetry-tracking-mode 1))
 
 (after! apheleia
   (setf (alist-get 'black apheleia-formatters)
