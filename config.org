@@ -12,6 +12,7 @@ Some sections are under a different copyright or license.
 See individual sections for more information.
 
 * Table of Contents :toc:
+- [[#headers][Headers]]
 - [[#clipboard][Clipboard]]
 - [[#org-mode][Org Mode]]
   - [[#general][General]]
@@ -28,6 +29,14 @@ See individual sections for more information.
   - [[#line-wrapping][Line Wrapping]]
 - [[#themes][Themes]]
 
+* Headers
+These are some general headers. Lexical binding is the only relevant thing
+right now, but I'm not even sure it's really used. Might as well, though,
+since it's nicer.
+
+#+begin_src emacs-lisp
+;; -*- lexical-binding: t -*-
+#+end_src
 * Clipboard
 I don't like Emacs constantly copying to my clipboard.
 There is a solution at
@@ -164,14 +173,15 @@ But that could be fine, I guess.
   (remove-hook 'python-mode-hook #'poetry-tracking-mode)
   (poetry-tracking-mode 1))
 
-(setf (alist-get 'black apheleia-formatters)
-      '(
-       "black"
-       (when
-           (apheleia-formatters-extension-p "pyi")
-         "--pyi")
-       (custom-apheleia-fill-column "--line-length")
-       "-"))
+(after! apheleia
+  (setf (alist-get 'black apheleia-formatters)
+        '(
+          "black"
+          (when
+              (apheleia-formatters-extension-p "pyi")
+            "--pyi")
+          (custom-apheleia-fill-column "--line-length")
+          "-")))
 #+end_src
 * Formatting
 ** Line Wrapping
