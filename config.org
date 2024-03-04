@@ -128,6 +128,13 @@ weird keybinding shenanigans.
 #+end_src
 * Programming
 ** General LSP and Formatting
+I use a custom fill column function for some Apheleia formatters
+because Emacs' columns are one less than the line length.
+
+4 space indents are what I find to be the sweet spot. Tabs cause issues
+with alignment, meaning a project would have to commit to tab length.
+But that could be fine, I guess.
+
 #+begin_src emacs-lisp
 (add-hook! '(python-mode-hook
              js-base-mode-hook
@@ -143,6 +150,12 @@ weird keybinding shenanigans.
 
 (map! :leader
       :desc "Show LSP docs" "c h" #'lsp-describe-thing-at-point)
+
+(defun custom-apheleia-fill-column (fill-flag)
+  "Adds 1 to fill-column for apheleia's purposes."
+  (append
+   (butlast (apheleia-formatters-fill-column fill-flag))
+   (list (number-to-string (+ 1 fill-column)))))
 #+end_src
 ** Python
 #+begin_src emacs-lisp
@@ -150,6 +163,15 @@ weird keybinding shenanigans.
 (after! poetry
   (remove-hook 'python-mode-hook #'poetry-tracking-mode)
   (poetry-tracking-mode 1))
+
+(setf (alist-get 'black apheleia-formatters)
+      '(
+       "black"
+       (when
+           (apheleia-formatters-extension-p "pyi")
+         "--pyi")
+       (custom-apheleia-fill-column "--line-length")
+       "-"))
 #+end_src
 * Formatting
 ** Line Wrapping
