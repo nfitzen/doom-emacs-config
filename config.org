@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: (C) 2022-2024 nfitzen <https://github.com/nfitzen>
 # Copyright (c) 2016-2022 Henrik Lissner.
 #+TITLE: Doom Emacs Config
-#+NAME: nfitzen
+#+AUTHOR: nfitzen
 
 Copyright \copy 2022-2024 nfitzen <https://github.com/nfitzen>. \\
 Copyright \copy 2016-2022 Henrik Lissner.
