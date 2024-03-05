@@ -182,6 +182,9 @@ As a hack, ~func-decl-cont~ is set to 0 in C because it's
 meaningless and will allow braces after function declarations
 to be nicer.
 
+I tried to use Emacs indent for C in Apheleia, but it's not
+playing nice, so I'm rebinding the ~format-buffer~ key as a hack.
+
 #+begin_src emacs-lisp
 (c-add-style "my-misc-style" '("linux"
                                (c-basic-offset . 4)
@@ -192,6 +195,42 @@ to be nicer.
 (setf (alist-get 'c-mode c-default-style) "my-c-style"
       (alist-get 'other c-default-style) "my-misc-style")
 
+;; NOTE: adapted from apheleia-indent-lisp-buffer by me.
+;; Copyright (C) 2019-2022 Radian LLC and Contributors.
+;; Also under Expat/MIT License.
+;; FIXME: doesn't format, instead prints a wrong type error.
+(cl-defun a-reindent-buffer
+    (&key buffer scratch callback &allow-other-keys)
+  "Formatter for C indent with Apheleia."
+  ;; (print "test")
+  (with-current-buffer scratch
+    (setq-local indent-line-function
+                (buffer-local-value 'indent-line-function buffer))
+    (funcall (with-current-buffer buffer major-mode))
+    (when c-style-variables-are-local-p
+      (dolist (var c-style-variables)
+        (make-local-variable var)
+        (set var (buffer-local-value var buffer))))
+    (indent-region (point-min) (point-max))
+    (funcall callback)))
+
+;; (after! apheleia
+;;   (setf (alist-get 'c-mode apheleia-mode-alist) 'c-indent
+;;         (alist-get 'cc-mode apheleia-mode-alist) 'c-indent
+;;         (alist-get 'c-indent apheleia-formatters) #'a-reindent-buffer))
+
+;; copied from https://www.emacswiki.org/emacs/ReformatBuffer.
+;; I believe that the merger doctrine applies because this function
+;; is so simple.
+(defun reindent-buffer ()
+  "Reindents current buffer."
+  (interactive)
+  (save-excursion
+    (indent-region (point-min) (point-max))))
+
+(map! :map 'c-mode-map
+      :leader
+      "c f" #'reindent-buffer)
 #+end_src
 ** Python
 #+begin_src emacs-lisp
