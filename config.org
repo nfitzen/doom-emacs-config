@@ -22,10 +22,13 @@ See individual sections for more information.
   - [[#org-super-agenda][Org Super Agenda]]
   - [[#org-markup][Org Markup]]
 - [[#dired][Dired]]
-- [[#programming][Programming]]
-  - [[#general-lsp-and-formatting][General LSP and Formatting]]
+- [[#lsp][LSP]]
+  - [[#basic][Basic]]
   - [[#python][Python]]
 - [[#formatting][Formatting]]
+  - [[#basic-1][Basic]]
+  - [[#c][C]]
+  - [[#python-1][Python]]
   - [[#line-wrapping][Line Wrapping]]
 - [[#themes][Themes]]
 
@@ -135,8 +138,19 @@ weird keybinding shenanigans.
 #+begin_src emacs-lisp
 (setq! dired-dwim-target t)
 #+end_src
-* Programming
-** General LSP and Formatting
+* LSP
+** Basic
+#+begin_src emacs-lisp
+(map! :map lsp-ui-mode-map
+      :leader
+      :desc "Show LSP docs" "c h" #'lsp-describe-thing-at-point)
+#+end_src
+** Python
+#+begin_src emacs-lisp
+(setq! lsp-pyright-python-executable-cmd "python3")
+#+end_src
+* Formatting
+** Basic
 I use a custom fill column function for some Apheleia formatters
 because Emacs' columns are one less than the line length.
 
@@ -153,10 +167,6 @@ But that could be fine, I guess.
 
 (setq! apheleia-formatters-respect-fill-column t)
 
-(setq-default indent-tabs-mode nil
-              c-basic-offset 4
-              tab-width 8)
-
 (map! :leader
       :desc "Show LSP docs" "c h" #'lsp-describe-thing-at-point)
 
@@ -166,10 +176,28 @@ But that could be fine, I guess.
    (butlast (apheleia-formatters-fill-column fill-flag))
    (list (number-to-string (+ 1 fill-column)))))
 #+end_src
+** C
+I prefer something approximating the [[https://docs.kernel.org/process/coding-style.html][Linux coding style]],
+but with 4 spaces instead of tabs. This generally applies
+everywhere.
+
+As a hack, ~func-decl-cont~ is set to 0 in C because it's
+meaningless and will allow braces after function declarations
+to be nicer.
+
+#+begin_src emacs-lisp
+(c-add-style "my-misc-style" '("linux"
+                               (c-basic-offset . 4)
+                               (indent-tabs-mode . nil)))
+(c-add-style "my-c-style" '("my-misc-style"
+                            (c-offsets-alist
+                             (func-decl-cont . 0))))
+(setf (alist-get 'c-mode c-default-style) "my-c-style"
+      (alist-get 'other c-default-style) "my-misc-style")
+
+#+end_src
 ** Python
 #+begin_src emacs-lisp
-(setq! lsp-pyright-python-executable-cmd "python3")
-
 (after! apheleia
   (setf (alist-get 'black apheleia-formatters)
         '(
@@ -180,7 +208,6 @@ But that could be fine, I guess.
           (custom-apheleia-fill-column "--line-length")
           "-")))
 #+end_src
-* Formatting
 ** Line Wrapping
 #+begin_src emacs-lisp
 (setq-default fill-column 78
@@ -188,10 +215,11 @@ But that could be fine, I guess.
 
 (add-hook! 'text-mode-hook :append :local
   (setq fill-column 70
-        display-fill-column-indicator 72))
+        display-fill-column-indicator-column 72))
 
 (add-hook! 'prog-mode-hook :append #'display-fill-column-indicator-mode)
-(add-hook! 'markdown-mode-hook :append #'display-fill-column-indicator-mode)
+(add-hook! 'markdown-mode-hook :append
+           #'display-fill-column-indicator-mode)
 
 (defun enable-multiline-block ()
   (if comment-multi-line
