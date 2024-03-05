@@ -167,9 +167,6 @@ But that could be fine, I guess.
 
 (setq! apheleia-formatters-respect-fill-column t)
 
-(map! :leader
-      :desc "Show LSP docs" "c h" #'lsp-describe-thing-at-point)
-
 (defun custom-apheleia-fill-column (fill-flag)
   "Adds 1 to fill-column for apheleia's purposes."
   (append
