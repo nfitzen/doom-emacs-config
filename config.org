@@ -249,7 +249,7 @@ playing nice, so I'm rebinding the ~format-buffer~ key as a hack.
 (setq-default fill-column 78
               display-fill-column-indicator-column 80)
 
-(add-hook! 'text-mode-hook :append :local
+(add-hook! 'text-mode-hook :append
   (setq fill-column 70
         display-fill-column-indicator-column 72))
 
