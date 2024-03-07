@@ -22,6 +22,7 @@ information.
   - [[#org-agenda][Org Agenda]]
   - [[#org-super-agenda][Org Super Agenda]]
   - [[#org-markup][Org Markup]]
+  - [[#org-latex-export][Org LaTeX Export]]
 - [[#dired][Dired]]
 - [[#lsp][LSP]]
   - [[#basic][Basic]]
@@ -133,6 +134,38 @@ weird keybinding shenanigans.
 
 (add-hook! 'org-load-hook #'my-org-mode-hook)
 (add-hook! 'org-mode-hook #'my-org-mode-hook)
+#+end_src
+** Org LaTeX Export
+I write in MLA for some of my classes, so I'd like to be able to
+use that. Bibliography processing is added to
+~org-latex-pdf-process~ by means of repeated calls to the
+processor, because LaTeX moment.
+
+For the sake of MLA, I also want the ability to ignore headlines,
+so that I can outline as I'm writing the essay. Pretty neat. This
+does use the ~org-contrib~ package, however, which might be prone
+to breaking. For now, it works on my machine\trade. See
+[[file:packages.el][packages.el]] for the package declaration.
+
+#+begin_src emacs-lisp
+(after! ox-latex
+  (setf (alist-get "mla" org-latex-classes nil nil #'string=)
+        '("\\documentclass{mla}"
+          ("\\section{%s}" . "\\section*{%s}")
+          ("\\subsection{%s}" . "\\subsection*{%s}")
+          ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+          ("\\paragraph{%s}" . "\\paragraph*{%s}")
+          ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (setq! org-latex-pdf-process
+         '("%latex -interaction nonstopmode -output-directory %o %f"
+           "%bib %b"
+           "%latex -interaction nonstopmode -output-directory %o %f"
+           "%bib %b"
+           "%latex -interaction nonstopmode -output-directory %o %f"))
+  (setq! org-latex-bib-compiler "biber"))
+
+(after! ox-extra
+  (ox-extras-activate '(ignore-headlines)))
 #+end_src
 
 * Dired

@@ -1,7 +1,7 @@
 ;;; init.el -*- lexical-binding: t; -*-
 ;; SPDX-License-Identifier: MIT
-;; SPDX-FileCopyrightText: (C) 2023 nfitzen <https://github.com/nfitzen>
-;; Copyright (c) 2016-2022 Henrik Lissner.
+;; SPDX-FileCopyrightText: (C) 2023-2024 nfitzen <https://github.com/nfitzen>
+;; Copyright (c) 2016-2024 Henrik Lissner.
 
 ;; This file controls what Doom modules are enabled and what order they load
 ;; in. Remember to run 'doom sync' after modifying it!

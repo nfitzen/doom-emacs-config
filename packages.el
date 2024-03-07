@@ -58,6 +58,7 @@
 (package! sage-shell-mode)
 (package! ob-sagemath)
 (package! ess)
+(package! org-contrib)
 
 (package! mcf-mode
   :recipe (:host github :repo "rasensuihei/mcf"))
