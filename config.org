@@ -1,6 +1,7 @@
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: MIT AND CC-BY-SA-3.0
 # SPDX-FileCopyrightText: (C) 2022-2024 nfitzen <https://github.com/nfitzen>
-# Copyright (c) 2016-2022 Henrik Lissner.
+# SPDX-FileCopyrightText: (C) 2016-2022 Henrik Lissner.
+# SPDX-FileContributor: algolix <https://stackoverflow.com/users/1402507/algolix>
 #+TITLE: Doom Emacs Config
 #+AUTHOR: nfitzen
 
@@ -8,9 +9,13 @@ Copyright \copy 2022-2024 [[https://github.com/nfitzen][nfitzen]]. \\
 Copyright \copy 2016-2022 Henrik Lissner.
 
 Most parts of this file are licensed under the
-[[file:LICENSE][Expat/MIT License]]. Some sections are under a
-different copyright or license. See individual sections for more
-information.
+[[file:LICENSE][Expat/MIT License]]. Some are not, but I believe it's
+fair use, though I note the license is
+[[file:LICENSES/CC-BY-SA-3.0.txt][CC BY-SA 3.0]] anyway, with
+[[https://stackoverflow.com/users/1402507/algolix][algolix]] being the
+licensor for that in the [[Org Markup]] section.
+
+Legal disclaimer out of the way, here we go.
 
 * Table of Contents :toc:
 - [[#headers][Headers]]
@@ -105,7 +110,7 @@ It seems cool.
   (org-super-agenda-mode))
 #+end_src
 ** Org Markup
-The following block is \copy 2013 algolix, licensed under
+The following block is written by algolix in 2013, licensed under
 [[https://creativecommons.org/licenses/by-sa/3.0/][CC BY-SA 3.0]].
 From [[https://stackoverflow.com/a/18513349/13840781][Stackoverflow]].
 Some minor changes were made from the SO post.
