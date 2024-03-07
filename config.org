@@ -7,9 +7,10 @@
 Copyright \copy 2022-2024 [[https://github.com/nfitzen][nfitzen]]. \\
 Copyright \copy 2016-2022 Henrik Lissner.
 
-Most parts of this file are licensed under the [[file:LICENSE][Expat/MIT License]].
-Some sections are under a different copyright or license.
-See individual sections for more information.
+Most parts of this file are licensed under the
+[[file:LICENSE][Expat/MIT License]]. Some sections are under a
+different copyright or license. See individual sections for more
+information.
 
 * Table of Contents :toc:
 - [[#headers][Headers]]
@@ -33,9 +34,9 @@ See individual sections for more information.
 - [[#themes][Themes]]
 
 * Headers
-These are some general headers. Lexical binding is the only relevant thing
-right now, but I'm not even sure it's really used. Might as well, though,
-since it's nicer.
+These are some general headers. Lexical binding is the only relevant
+thing right now, but I'm not even sure it's really used. Might as
+well, though, since it's nicer.
 
 #+begin_src emacs-lisp
 ;; -*- lexical-binding: t -*-
@@ -58,7 +59,7 @@ It seems cool.
 * Org Mode
 ** General
 #+begin_src emacs-lisp
-(setq org-directory "~/org/")
+(setq! org-directory "~/org/")
 #+end_src
 ** Keybindings
 #+begin_src emacs-lisp
@@ -70,35 +71,35 @@ It seems cool.
 ** Org Journal
 #+begin_src emacs-lisp
 (after! org-journal
-  (setq org-journal-enable-encryption t))
+  (setq! org-journal-enable-encryption t))
 #+end_src
 ** Org Agenda
 #+begin_src emacs-lisp
 (after! org-agenda
-  (setq org-agenda-todo-ignore-scheduled 'future
-        org-agenda-tags-todo-honor-ignore-options t
-        org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled
-        org-todo-repeat-to-state t
-        org-log-done 'time
-        org-pretty-entities t
-        ))
+  (setq! org-agenda-todo-ignore-scheduled 'future
+         org-agenda-tags-todo-honor-ignore-options t
+         org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled
+         org-todo-repeat-to-state t
+         org-log-done 'time
+         org-pretty-entities t
+         ))
 #+end_src
 ** Org Super Agenda
 #+begin_src emacs-lisp
 (use-package! org-super-agenda
   :after org-agenda
   :init
-  (setq org-super-agenda-groups '(
-                                  (:name "Today"
-                                   :time-grid t
-                                   :scheduled today)
-                                  (:name "Important"
-                                   :priority "A")
-                                  (:name "Deadlines"
-                                   :tag "dl")
-                                  (:name "School"
-                                   :tag "school")
-                                  ))
+  (setq! org-super-agenda-groups '(
+                                   (:name "Today"
+                                    :time-grid t
+                                    :scheduled today)
+                                   (:name "Important"
+                                    :priority "A")
+                                   (:name "Deadlines"
+                                    :tag "dl")
+                                   (:name "School"
+                                    :tag "school")
+                                   ))
   :config
   (org-super-agenda-mode))
 #+end_src
@@ -154,9 +155,9 @@ weird keybinding shenanigans.
 I use a custom fill column function for some Apheleia formatters
 because Emacs' columns are one less than the line length.
 
-4 space indents are what I find to be the sweet spot. Tabs cause issues
-with alignment, meaning a project would have to commit to tab length.
-But that could be fine, I guess.
+4 space indents are what I find to be the sweet spot. Tabs cause
+issues with alignment, meaning a project would have to commit to
+tab length. But that could be fine, I guess.
 
 #+begin_src emacs-lisp
 (add-hook! '(python-mode-hook
@@ -174,13 +175,14 @@ But that could be fine, I guess.
    (list (number-to-string (+ 1 fill-column)))))
 #+end_src
 ** C
-I prefer something approximating the [[https://docs.kernel.org/process/coding-style.html][Linux coding style]],
+I prefer something approximating the
+[[https://docs.kernel.org/process/coding-style.html][Linux coding style]],
 but with 4 spaces instead of tabs. This generally applies
 everywhere.
 
 As a hack, ~func-decl-cont~ is set to 0 in C because it's
-meaningless and will allow braces after function declarations
-to be nicer.
+meaningless and will allow braces after function declarations to
+be nicer.
 
 I tried to use Emacs indent for C in Apheleia, but it's not
 playing nice, so I'm rebinding the ~format-buffer~ key as a hack.
@@ -249,9 +251,9 @@ playing nice, so I'm rebinding the ~format-buffer~ key as a hack.
 (setq-default fill-column 78
               display-fill-column-indicator-column 80)
 
-(add-hook! 'text-mode-hook :append
-  (setq fill-column 70
-        display-fill-column-indicator-column 72))
+(setq-hook! 'text-mode-hook
+  fill-column 70
+  display-fill-column-indicator-column 72)
 
 (add-hook! 'prog-mode-hook :append #'display-fill-column-indicator-mode)
 (add-hook! 'markdown-mode-hook :append
