@@ -6,3 +6,4 @@
 
 # using literate config
 /config.el
+/packages.el

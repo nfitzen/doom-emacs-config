@@ -18,6 +18,7 @@ licensor for that in the [[Org Markup]] section.
 Legal disclaimer out of the way, here we go.
 
 * Table of Contents :toc:
+- [[#packages][Packages]]
 - [[#headers][Headers]]
 - [[#clipboard][Clipboard]]
 - [[#org-mode][Org Mode]]
@@ -39,6 +40,57 @@ Legal disclaimer out of the way, here we go.
   - [[#line-wrapping][Line Wrapping]]
 - [[#themes][Themes]]
 
+* Packages
+:PROPERTIES:
+:header-args: emacs-lisp :tangle packages.el
+:END:
+These are some additional packages I install.
+Will likely move these to somewhere.
+
+#+begin_src emacs-lisp
+;; -*- no-byte-compile: t -*-
+#+end_src
+
+This lets me feel like I have sensible text wrapping in documents I
+can't edit as much.
+#+begin_src emacs-lisp
+(package! visual-fill-column)
+#+end_src
+
+For the grammar police.
+#+begin_src emacs-lisp
+(package! bnf-mode)
+#+end_src
+
+~org-super-agenda~ is pretty self-explanatory. My config is in the
+[[Org Super Agenda]] section.
+#+begin_src emacs-lisp
+(package! org-super-agenda)
+#+end_src
+
+I do a bit of math stuff sometimes, so it's nice to program in R and
+Sage in Emacs.
+#+begin_src emacs-lisp
+(package! sage-shell-mode)
+(package! ob-sagemath)
+(package! ess)
+#+end_src
+
+I use org-contrib as described in [[Org LaTeX Export]]. Probably
+should move it there sometime.
+#+begin_src emacs-lisp
+(package! org-contrib)
+#+end_src
+
+I used to program Minecraft datapacks quite a lot. ~mcf-mode~
+doesn't suit my needs particularly well, but the syntax highlighting
+suffices well enough. I would like to hook ~lsp-mode~ into
+[[https://github.com/SPYGlassMC/SPYGlass][Spyglass]] at some point.
+
+#+begin_src emacs-lisp
+(package! mcf-mode
+  :recipe (:host github :repo "rasensuihei/mcf"))
+#+end_src
 * Headers
 These are some general headers. Lexical binding is the only relevant
 thing right now, but I'm not even sure it's really used. Might as
