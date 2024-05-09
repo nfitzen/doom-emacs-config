@@ -30,15 +30,20 @@ Legal disclaimer out of the way, here we go.
   - [[#org-markup][Org Markup]]
   - [[#org-latex-export][Org LaTeX Export]]
 - [[#dired][Dired]]
+- [[#programming][Programming]]
+  - [[#web][Web]]
 - [[#lsp][LSP]]
   - [[#basic][Basic]]
   - [[#python][Python]]
+  - [[#mcfunction][MCFunction]]
 - [[#formatting][Formatting]]
   - [[#basic-1][Basic]]
   - [[#c][C]]
   - [[#python-1][Python]]
+  - [[#javascript][JavaScript]]
   - [[#line-wrapping][Line Wrapping]]
 - [[#themes][Themes]]
+- [[#copyright][Copyright]]
 
 * Packages
 :PROPERTIES:
@@ -91,6 +96,10 @@ suffices well enough. I would like to hook ~lsp-mode~ into
 (package! mcf-mode
   :recipe (:host github :repo "rasensuihei/mcf"))
 #+end_src
+
+#+begin_src emacs-lisp :tangle no
+(package! minesweeper)
+#+end_src
 * Headers
 These are some general headers. Lexical binding is the only relevant
 thing right now, but I'm not even sure it's really used. Might as
@@ -121,10 +130,11 @@ It seems cool.
 #+end_src
 ** Keybindings
 #+begin_src emacs-lisp
-(map! :map org-mode-map
-      "M-q" #'fill-paragraph
-      :leader
-      "t p" #'+org-pretty-mode)
+(after! org
+  (map! :map org-mode-map
+        "M-q" #'fill-paragraph
+        :leader
+        "t p" #'+org-pretty-mode))
 #+end_src
 ** Org Journal
 #+begin_src emacs-lisp
@@ -218,6 +228,8 @@ to breaking. For now, it works on my machine\trade. See
            "%bib %b"
            "%latex -interaction nonstopmode -output-directory %o %f"
            "%bib %b"
+           "%latex -interaction nonstopmode -output-directory %o %f"
+           "%bib %b"
            "%latex -interaction nonstopmode -output-directory %o %f"))
   (setq! org-latex-bib-compiler "biber"))
 
@@ -229,16 +241,70 @@ to breaking. For now, it works on my machine\trade. See
 #+begin_src emacs-lisp
 (setq! dired-dwim-target t)
 #+end_src
-* LSP
-** Basic
+* Programming
+** Web
 #+begin_src emacs-lisp
+(add-to-list 'auto-mode-alist
+             '("\\.mjs" . javascript-mode))
+
+;; (remove-hook! '(eglot-ensure) '(json-mode-hook js-mode-hook web-mode-hook))
+
+;; (setq-hook! 'js-mode-hook js-indent-level 4)
+#+end_src
+* LSP
+I'm switching to eglot instead of lsp-mode now, so I'll need to
+rework this section.
+** Basic
+#+begin_src emacs-lisp :tangle no
 (map! :map lsp-ui-mode-map
+      :after lsp-ui
       :leader
       :desc "Show LSP docs" "c h" #'lsp-describe-thing-at-point)
 #+end_src
 ** Python
-#+begin_src emacs-lisp
-(setq! lsp-pyright-python-executable-cmd "python3")
+As a hack, I override lsp-pyright's helper functions
+to use the venv path.
+
+#+begin_src emacs-lisp :tangle no
+(defun get-python-venv-path ()
+  "Gets the current venv path from pyvenv."
+  (if (equal major-mode 'python-mode)
+      (or (file-name-directory (directory-file-name pyvenv-virtual-env)) "")
+    ""))
+
+(defun get-python-venv-name ()
+  "Gets the venv name from pyvenv"
+  (when (equal major-mode 'python-mode)
+    (or pyvenv-virtual-env-name "")))
+
+(defun get-python-venv-python-path ()
+  "Gets the Python executable path."
+  (when (equal major-mode 'python-mode)
+    (concat (or pyvenv-virtual-env "/")
+            "bin/"
+            (or lsp-pyright-python-executable-cmd "python"))))
+
+;; (after! lsp-pyright
+;;   (setq! lsp-pyright-python-executable-cmd "python3")
+;;   (lsp-register-custom-settings
+;;    `(("python.pythonPath" get-python-venv-python-path)
+;;      ("python.venvPath" get-python-venv-path)
+;;      ("python.venv" get-python-venv-name))))
+#+end_src
+** MCFunction
+#+begin_src emacs-lisp :tangle no
+(after! lsp-mode
+  (lsp-dependency 'datapack-language-server
+                  '(:system "datapack-language-server")
+                  '(:npm :package "@spgoding/datapack-language-server"
+                    :path "datapack-language-server"))
+  (lsp-register-client (make-lsp-client
+                        :new-connection (lsp-stdio-connection (lambda ()
+                                         (cons (lsp-package-path 'datapack-language-server)
+                                         "--stdio")))
+                        :language-id "mcfunction"
+                        :major-modes ('json-mode
+                                      'mcf-mode))))
 #+end_src
 * Formatting
 ** Basic
@@ -320,9 +386,8 @@ playing nice, so I'm rebinding the ~format-buffer~ key as a hack.
   (save-excursion
     (indent-region (point-min) (point-max))))
 
-(map! :map 'c-mode-map
-      :leader
-      "c f" #'reindent-buffer)
+(map! :map c-mode-map
+      "SPC c F" #'reindent-buffer)
 #+end_src
 ** Python
 #+begin_src emacs-lisp
@@ -335,6 +400,20 @@ playing nice, so I'm rebinding the ~format-buffer~ key as a hack.
             "--pyi")
           (custom-apheleia-fill-column "--line-length")
           "-")))
+#+end_src
+** JavaScript
+Disable Apheleia
+
+#+begin_src emacs-lisp
+(setq! js-indent-level 4
+       web-mode-indent-style 4
+       js2-basic-offset 4)
+
+(setq-default js-indent-level 4
+              web-mode-indent-style 4
+              js2-basic-offset 4)
+
+;; (add-hook 'rjsx-mode-hook (lambda () (apheleia-mode nil)))
 #+end_src
 ** Line Wrapping
 #+begin_src emacs-lisp
@@ -358,9 +437,46 @@ playing nice, so I'm rebinding the ~format-buffer~ key as a hack.
 Miscellaneous theming and style.
 
 #+begin_src emacs-lisp
-(setq doom-theme 'doom-one)
-(setq display-line-numbers-type 'relative)
+(setq! doom-theme 'doom-one)
+(setq! display-line-numbers-type 'relative)
 
 (map! :leader
       "t c" #'display-fill-column-indicator-mode)
+#+end_src
+* Copyright
+I am a bit of a stickler for copyright. I want to be able to insert
+copyright headers into my code. The following is how I tend to do
+it, which you can see at the top of this file. Minor alterations
+sometimes need to be made, since I drop the "(C)" when licensing
+under CC0-1.0 to have only the minimal elements of the REUSE
+guidelines while trying to minimize the chance it gets seen as a
+copyright notice (whereas when I want a copyright, I want to
+maximize the chance under the guidelines).
+
+#+begin_src emacs-lisp
+(setq!
+ custom-copyright-name "nfitzen"
+ custom-copyright-contact "https://github.com/nfitzen")
+
+(define-skeleton custom-copyright-insert
+  "Copyright with SPDX header"
+  "License ID: "
+  comment-start
+  "SPDX-License-Identifier: "
+  str
+  comment-end
+  \n
+  comment-start
+  "SPDX-FileCopyrightText: (C) "
+  `(format-time-string "%Y")
+  " "
+  custom-copyright-name
+  " <"
+  custom-copyright-contact
+  ">"
+  comment-end
+  \n)
+
+(map! :leader
+      :desc "Insert copyright" "l i" #'custom-copyright-insert)
 #+end_src
