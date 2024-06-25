@@ -33,13 +33,10 @@ Legal disclaimer out of the way, here we go.
 - [[#programming][Programming]]
   - [[#web][Web]]
 - [[#lsp][LSP]]
-  - [[#basic][Basic]]
-  - [[#python][Python]]
-  - [[#mcfunction][MCFunction]]
 - [[#formatting][Formatting]]
-  - [[#basic-1][Basic]]
+  - [[#basic][Basic]]
   - [[#c][C]]
-  - [[#python-1][Python]]
+  - [[#python][Python]]
   - [[#javascript][JavaScript]]
   - [[#line-wrapping][Line Wrapping]]
 - [[#themes][Themes]]
@@ -252,59 +249,8 @@ to breaking. For now, it works on my machine\trade. See
 ;; (setq-hook! 'js-mode-hook js-indent-level 4)
 #+end_src
 * LSP
-I'm switching to eglot instead of lsp-mode now, so I'll need to
-rework this section.
-** Basic
-#+begin_src emacs-lisp :tangle no
-(map! :map lsp-ui-mode-map
-      :after lsp-ui
-      :leader
-      :desc "Show LSP docs" "c h" #'lsp-describe-thing-at-point)
-#+end_src
-** Python
-As a hack, I override lsp-pyright's helper functions
-to use the venv path.
-
-#+begin_src emacs-lisp :tangle no
-(defun get-python-venv-path ()
-  "Gets the current venv path from pyvenv."
-  (if (equal major-mode 'python-mode)
-      (or (file-name-directory (directory-file-name pyvenv-virtual-env)) "")
-    ""))
-
-(defun get-python-venv-name ()
-  "Gets the venv name from pyvenv"
-  (when (equal major-mode 'python-mode)
-    (or pyvenv-virtual-env-name "")))
-
-(defun get-python-venv-python-path ()
-  "Gets the Python executable path."
-  (when (equal major-mode 'python-mode)
-    (concat (or pyvenv-virtual-env "/")
-            "bin/"
-            (or lsp-pyright-python-executable-cmd "python"))))
-
-;; (after! lsp-pyright
-;;   (setq! lsp-pyright-python-executable-cmd "python3")
-;;   (lsp-register-custom-settings
-;;    `(("python.pythonPath" get-python-venv-python-path)
-;;      ("python.venvPath" get-python-venv-path)
-;;      ("python.venv" get-python-venv-name))))
-#+end_src
-** MCFunction
-#+begin_src emacs-lisp :tangle no
-(after! lsp-mode
-  (lsp-dependency 'datapack-language-server
-                  '(:system "datapack-language-server")
-                  '(:npm :package "@spgoding/datapack-language-server"
-                    :path "datapack-language-server"))
-  (lsp-register-client (make-lsp-client
-                        :new-connection (lsp-stdio-connection (lambda ()
-                                         (cons (lsp-package-path 'datapack-language-server)
-                                         "--stdio")))
-                        :language-id "mcfunction"
-                        :major-modes ('json-mode
-                                      'mcf-mode))))
+#+begin_src emacs-lisp
+(add-hook! ('java-mode-hook 'python-mode-hook) 'eglot-ensure)
 #+end_src
 * Formatting
 ** Basic
