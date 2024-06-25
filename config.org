@@ -387,7 +387,7 @@ playing nice, so I'm rebinding the ~format-buffer~ key as a hack.
     (indent-region (point-min) (point-max))))
 
 (map! :map c-mode-map
-      "SPC c F" #'reindent-buffer)
+      :nv "SPC c F" #'reindent-buffer)
 #+end_src
 ** Python
 #+begin_src emacs-lisp
