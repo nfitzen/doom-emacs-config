@@ -25,6 +25,7 @@ Legal disclaimer out of the way, here we go.
   - [[#general][General]]
   - [[#keybindings][Keybindings]]
   - [[#org-journal][Org Journal]]
+  - [[#org-habits][Org Habits]]
   - [[#org-agenda][Org Agenda]]
   - [[#org-super-agenda][Org Super Agenda]]
   - [[#org-markup][Org Markup]]
@@ -67,7 +68,7 @@ For the grammar police.
 ~org-super-agenda~ is pretty self-explanatory. My config is in the
 [[Org Super Agenda]] section.
 #+begin_src emacs-lisp
-(package! org-super-agenda)
+(package! org-super-agenda :disable t)
 #+end_src
 
 I do a bit of math stuff sometimes, so it's nice to program in R and
@@ -138,6 +139,12 @@ It seems cool.
 (after! org-journal
   (setq! org-journal-enable-encryption t))
 #+end_src
+** Org Habits
+I've recently discovered [[https://orgmode.org/manual/Tracking-your-habits.html][Org Habits]]. Pretty neat.
+
+#+begin_src emacs-lisp
+(add-to-list 'org-modules 'org-habit t)
+#+end_src
 ** Org Agenda
 #+begin_src emacs-lisp
 (after! org-agenda
@@ -154,17 +161,15 @@ It seems cool.
 (use-package! org-super-agenda
   :after org-agenda
   :init
-  (setq! org-super-agenda-groups '(
-                                   (:name "Today"
-                                    :time-grid t
-                                    :scheduled today)
+  (setq! org-super-agenda-groups '((:habit t)
+                                   (:name "Events"
+                                    :tag "events")
                                    (:name "Important"
                                     :priority "A")
                                    (:name "Deadlines"
                                     :tag "dl")
                                    (:name "School"
-                                    :tag "school")
-                                   ))
+                                    :tag "school")))
   :config
   (org-super-agenda-mode))
 #+end_src
