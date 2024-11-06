@@ -157,6 +157,10 @@ I've recently discovered [[https://orgmode.org/manual/Tracking-your-habits.html]
          ))
 #+end_src
 ** Org Super Agenda
+:PROPERTIES:
+:header-args: :tangle no
+:END:
+
 #+begin_src emacs-lisp
 (use-package! org-super-agenda
   :after org-agenda
